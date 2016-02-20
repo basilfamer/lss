@@ -57,7 +57,7 @@ while(True):
     scr.clear()
     drawLines()
     event = scr.getch()
-    if event==curses.KEY_UP: 
+    if event==curses.KEY_UP or event==ord('k'): 
     	if selected > 0:
           selected -= 1
         else:
@@ -65,7 +65,7 @@ while(True):
           scroll = selected - 10
         if scroll > 0 and selected < 10+scroll:
           scroll -= 1
-    if event==curses.KEY_DOWN:
+    if event==curses.KEY_DOWN or event==ord('j'):
     	if selected < len(files)-1:
         	selected += 1
        	else:
@@ -77,7 +77,7 @@ while(True):
       os.system('vim ' + files[selected])
     if event==ord('q'):
         break
-    if event==curses.KEY_RIGHT:
+    if event==curses.KEY_RIGHT or event==ord('l'):
     	search = ""
         if os.path.isdir(files[selected]):
 			directory = files[selected]
@@ -86,9 +86,9 @@ while(True):
 			selected = 0
 			scroll = 0
        	else:
-       		os.system('open ' + files[selected])
+       		os.system('vim' + files[selected])
        		break
-    if event==curses.KEY_LEFT:
+    if event==curses.KEY_LEFT or event==ord('h'):
     	search = ""
         files = listDir('..')
         os.chdir('..')
