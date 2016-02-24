@@ -12,6 +12,7 @@ for arg in sys.argv:
 
 scroll = 0
 selected = 0
+oldSelected = 0
 
 if search in ["help","-h","-help","-H","--h"]:
 	print "lss: usage: lss [substring]"
@@ -83,6 +84,7 @@ while(True):
 			directory = files[selected]
 			files = listDir(directory)
 			os.chdir(directory)
+			oldSelected = selected
 			selected = 0
 			scroll = 0
        	else:
@@ -92,7 +94,7 @@ while(True):
     	search = ""
         files = listDir('..')
         os.chdir('..')
-        selected = 0
+        selected = oldSelected
         scroll = 0
 
 curses.endwin()
