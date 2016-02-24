@@ -1,3 +1,4 @@
+
 import curses
 import os
 import sys
@@ -12,6 +13,7 @@ for arg in sys.argv:
 
 scroll = 0
 selected = 0
+oldSelected = 0
 
 if search in ["help","-h","-help","-H","--h"]:
 	print "lss: usage: lss [substring]"
@@ -42,11 +44,11 @@ files = listDir(os.curdir)
 
 def drawLines():
     for f in files[0+scroll:20+scroll]:
-        if f == files[selected]: 
-            scr.addstr(f + '\n', curses.A_STANDOUT)  
+        if f == files[selected]:
+            scr.addstr(f + '\n', curses.A_STANDOUT)
         elif os.path.isdir(f):
-            scr.addstr(f + '\n', curses.A_BOLD)  
-        else:    
+            scr.addstr(f + '\n', curses.A_BOLD)
+        else:
             scr.addstr(f + '\n')
 
     scr.addstr("\nPress V to open in Vim\n")
@@ -57,7 +59,7 @@ while(True):
     scr.clear()
     drawLines()
     event = scr.getch()
-    if event==curses.KEY_UP or event==ord('k'): 
+    if event==curses.KEY_UP or event==ord('k'):
     	if selected > 0:
           selected -= 1
         else:
@@ -83,6 +85,7 @@ while(True):
 			directory = files[selected]
 			files = listDir(directory)
 			os.chdir(directory)
+			oldSelected = selected
 			selected = 0
 			scroll = 0
        	else:
@@ -92,7 +95,9 @@ while(True):
     	search = ""
         files = listDir('..')
         os.chdir('..')
-        selected = 0
+        selected = oldSelected
         scroll = 0
+        while selected > 10+scroll:
+            scroll += 1
 
 curses.endwin()
